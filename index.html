@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Cardápio Digital - Casa de Carnes Denilson</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1c1c1c;
+            padding-bottom: 100px;
+        }
+
+        /* Topo Centralizado com a Logo */
+        .header {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 25px 20px 15px 20px;
+            border-bottom: 3px solid #9e1b1b;
+            position: sticky;
+            top: 0;
+            z-index: 9997;
+            background-color: #ffffff;
+        }
+
+        .logo-container {
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .status-badge.aberto {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .status-badge.fechado {
+            background-color: #c0392b;
+            color: white;
+        }
+
+        /* Banner deslizante (sticky, abaixo do header) */
+        .sliding-banner {
+            background: linear-gradient(90deg, #9e1b1b, #c0392b);
+            color: white;
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 11pt;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            z-index: 9996;
+            width: 100%;
+        }
+
+        .sliding-banner .slide-text {
+            display: inline-block;
+            animation: slideBanner 20s linear infinite;
+            padding-left: 100%;
+        }
+
+        .sliding-banner span {
+            margin-right: 50px;
+        }
+
+        @keyframes slideBanner {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Painel de Horários e Entregas */
+        .info-box {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 30px auto 20px;
+            font-size: 11pt;
+            line-height: 1.6;
+        }
+
+        .info-title {
+            color: #9e1b1b;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 10.5pt;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 4px;
+        }
+
+        /* Imagens das seções */
+        .section-image {
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+
+        .section-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Categorias do Cardápio */
+        .section-title {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+            color: #8b1a1a;
+            font-size: 16pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 20px 0 20px 0;
+            padding: 14px 0 14px 15px;
+            border-left: 6px solid #9e1b1b;
+            border-radius: 0 12px 12px 0;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(158, 27, 27, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 24pt;
+        }
+
+        .section-text {
+            flex: 1;
+        }
+
+        .section-sub {
+            font-size: 10pt;
+            font-weight: normal;
+            color: #b85c5c;
+            text-transform: none;
+            margin-top: 4px;
+        }
+
+        /* Cards de Itens */
+        .menu-item-card {
+            background-color: #ffffff;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .item-name {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #1c1c1c;
+        }
+
+        .item-price {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #9e1b1b;
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-size: 10pt;
+            color: #666666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .item-badge {
+            display: inline-block;
+            background-color: #9e1b1b;
+            color: #ffffff;
+            font-size: 8pt;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .quantidade-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quantidade-area label {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .quantidade-input {
+            width: 70px;
+            padding: 5px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 10pt;
+        }
+
+        .subtotal {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #1c1c1c;
+            background: #f5f5f5;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .btn-add-item {
+            background-color: #9e1b1b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 12px;
+            font-size: 9pt;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-add-item:hover {
+            background-color: #7a1515;
+            transform: scale(1.02);
+        }
+
+        /* Estilo especial para Kits (composição) */
+        .kit-composition {
+            background-color: #fef5e8;
+            border-left: 3px solid #9e1b1b;
+            padding: 8px 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 9.5pt;
+        }
+
+        /* Botão Mostrar Mais */
+        .show-more-btn {
+            background-color: transparent;
+            border: 2px solid #9e1b1b;
+            color: #9e1b1b;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 10pt;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0 20px 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .show-more-btn:hover {
+            background-color: #9e1b1b;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .hidden-items {
+            display: none;
+        }
+
+        .hidden-items.show {
+            display: block;
+        }
+
+        /* Banner para anunciantes */
+        .ad-banner {
+            width: 100%;
+            background: #f8f8f8;
+            border-radius: 12px;
+            margin: 20px 0;
+            padding: 12px 15px;
+            text-align: center;
+            color: #444;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ad-banner h4 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #9e1b1b;
+        }
+
+        .ad-banner p {
+            font-size: 10pt;
+            max-width: 90%;
+            color: #555;
+        }
+
+        .ad-banner button {
+            background-color: #9e1b1b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 5px 12px;
+            font-size: 9pt;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .ad-banner button:hover {
+            background-color: #7a1515;
+            transform: scale(1.02);
+        }
+
+        /* Barra de Menu Fixa no Rodapé */
+        .footer-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 3px solid #9e1b1b;
+            padding: 8px 0 10px;
+            z-index: 9999;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        .footer-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        .footer-cell {
+            width: 12.5%;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .footer-link {
+            text-decoration: none;
+            color: #666666;
+            font-size: 8pt;
+            display: block;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 5px 0;
+            transition: 0.2s;
+            cursor: pointer;
+            border-radius: 24px;
+        }
+
+        .footer-link:hover {
+            color: #9e1b1b;
+            transform: scale(1.05);
+        }
+
+        .footer-link.active {
+            background-color: #9e1b1b;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .footer-icon {
+            font-size: 13pt;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Botões flutuantes */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 9998;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #1da15b;
+        }
+
+        /* Botão Meu Pedido com efeito pulsante e neon */
+        .cart-float {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            background-color: #9e1b1b;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 11pt;
+            box-shadow: 0 0 8px rgba(158, 27, 27, 0.6), 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 9998;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 5px rgba(158, 27, 27, 0.4), 0 4px 12px rgba(0,0,0,0.25);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(158, 27, 27, 0.9), 0 6px 16px rgba(0,0,0,0.3);
+                transform: scale(1.02);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(158, 27, 27, 0.4), 0 4px 12px rgba(0,0,0,0.25);
+                transform: scale(1);
+            }
+        }
+
+        .cart-float:hover {
+            background-color: #7a1515;
+            transform: scale(1.05);
+            animation: none;
+            box-shadow: 0 0 25px rgba(158, 27, 27, 1), 0 6px 18px black;
+        }
+
+        .cart-count {
+            background-color: white;
+            color: #9e1b1b;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 11pt;
+        }
+
+        /* Modal do carrinho */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart-modal.active {
+            display: flex;
+        }
+
+        .cart-modal-content {
+            background-color: white;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 20px;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .cart-modal-content h3 {
+            color: #9e1b1b;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #9e1b1b;
+            padding-bottom: 8px;
+        }
+
+        .cart-items-list {
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .cart-item-info {
+            flex: 2;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+        }
+
+        .cart-item-price {
+            font-size: 10pt;
+            color: #9e1b1b;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cart-item-edit, .cart-item-remove {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: 0.2s;
+        }
+
+        .cart-item-edit {
+            color: #2c3e50;
+        }
+
+        .cart-item-edit:hover {
+            color: #3498db;
+            transform: scale(1.1);
+        }
+
+        .cart-item-remove {
+            color: #c0392b;
+        }
+
+        .cart-item-remove:hover {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 14pt;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #9e1b1b;
+        }
+
+        /* Formulário do pedido */
+        .order-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 10pt;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 10pt;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+        }
+
+        .conditional-field {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .send-whatsapp-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 11pt;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .send-whatsapp-btn:hover {
+            background-color: #1da15b;
+            transform: scale(1.02);
+        }
+
+        .close-cart-btn {
+            background-color: #9e1b1b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 550px) {
+            .footer-link {
+                font-size: 6.5pt;
+            }
+            .footer-icon {
+                font-size: 11pt;
+            }
+            .item-name {
+                font-size: 11pt;
+            }
+            .item-price {
+                font-size: 11pt;
+            }
+            .section-title {
+                font-size: 14pt;
+                padding: 10px 0 10px 12px;
+            }
+            .section-icon {
+                font-size: 20pt;
+            }
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                bottom: 80px;
+            }
+            .cart-float {
+                bottom: 80px;
+                padding: 8px 16px;
+                font-size: 10pt;
+            }
+            .ad-banner h4 {
+                font-size: 12pt;
+            }
+            .ad-banner p {
+                font-size: 9pt;
+            }
+            .sliding-banner {
+                font-size: 9pt;
+                padding: 6px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Topo com Logo -->
+    <div class="header" id="mainHeader">
+        <div class="logo-container">
+            <img class="logo-img" src="https://i.ibb.co/hxdzXmKC/1000262285-removebg-preview.png" alt="Casa de Carnes Denilson">
+        </div>
+        <div class="status-badge" id="statusBadge">● Carregando...</div>
+    </div>
+
+    <!-- BANNER DESLIZANTE (sticky, fora do container) -->
+    <div class="sliding-banner" id="slidingBanner">
+        <div class="slide-text">
+            <span>🔥 CONFIRA NOSSOS KITS SEMANAIS 🔥</span>
+            <span>🥩 ECONOMIA GARANTIDA 🥩</span>
+            <span>📦 PEÇA JÁ O SEU KIT 📦</span>
+            <span>🔥 CONFIRA NOSSOS KITS SEMANAIS 🔥</span>
+            <span>🥩 ECONOMIA GARANTIDA 🥩</span>
+            <span>📦 PEÇA JÁ O SEU KIT 📦</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- ================= 1° SEÇÃO: AVES ================= -->
+        <div class="section-image" id="img-aves">
+            <img src="https://i.ibb.co/B5ccZ8Wx/Screenshot-20260610-234931-Fotos.png" alt="Destaque Aves">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🐔</span>
+            <div class="section-text">
+                Aves
+                <div class="section-sub">Frangos e derivados selecionados</div>
+            </div>
+        </div>
+        <div id="aves-container"></div>
+
+        <!-- ================= 2° SEÇÃO: CARNES BOVINAS ================= -->
+        <div class="section-image" id="img-bovinos">
+            <img src="https://i.ibb.co/fgbPjgx/Screenshot-20260610-235012-Fotos.png" alt="Destaque Carnes Bovinas">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🥩</span>
+            <div class="section-text">
+                Carnes Bovinas
+                <div class="section-sub">Cortes nobres e tradicionais</div>
+            </div>
+        </div>
+        <div id="bovinos-container"></div>
+
+        <!-- BANNER PUBLICITÁRIO 1 (entre Bovinos e Suínos) -->
+        <div class="ad-banner">
+            <h4>🚀 Destaque sua marca</h4>
+            <p>Seu negócio visto por centenas de clientes. Espaço promocional.</p>
+            <button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Tenho%20interesse%20em%20anunciar%20no%20cardápio%20digital.','_blank')">Anunciar</button>
+        </div>
+
+        <!-- ================= 3° SEÇÃO: CARNES SUÍNAS ================= -->
+        <div class="section-image" id="img-suinos">
+            <img src="https://i.ibb.co/QjmFLPrx/Screenshot-20260611-000035-Fotos.png" alt="Destaque Carnes Suínas">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🐷</span>
+            <div class="section-text">
+                Carnes Suínas
+                <div class="section-sub">Cortes selecionados do porco</div>
+            </div>
+        </div>
+        <div id="suinos-container"></div>
+
+        <!-- ================= 4° SEÇÃO: EMBUTIDOS & OUTROS ================= -->
+        <div class="section-image" id="img-embutidos">
+            <img src="https://i.ibb.co/gZ38k5hC/Screenshot-20260611-102325-Fotos.png" alt="Embutidos e Outros">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🍖</span>
+            <div class="section-text">
+                Embutidos & Outros
+                <div class="section-sub">Linguiças, defumados e especiais</div>
+            </div>
+        </div>
+        <div id="embutidos-container"></div>
+
+        <!-- ================= 5° SEÇÃO: ESPECIALIDADES DA CASA ================= -->
+        <div class="section-image" id="img-especiais">
+            <img src="https://i.ibb.co/7NryLw5N/Screenshot-20260611-101645-Fotos.png" alt="Especialidades da Casa">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🏆</span>
+            <div class="section-text">
+                Especialidades da Casa
+                <div class="section-sub">Receitas exclusivas Denilson</div>
+            </div>
+        </div>
+        <div id="especiais-container"></div>
+
+        <!-- ================= 6° SEÇÃO: ESPETINHOS ================= -->
+        <div class="section-image" id="img-espetinhos">
+            <img src="https://i.ibb.co/Tq70QhYK/Screenshot-20260611-101659-Fotos.png" alt="Espetinhos">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🍢</span>
+            <div class="section-text">
+                Espetinhos
+                <div class="section-sub">Espetinhos prontos para o churrasco</div>
+            </div>
+        </div>
+        <div id="espetinhos-container"></div>
+
+        <!-- BANNER PUBLICITÁRIO 2 (entre Espetinhos e Linguiças) -->
+        <div class="ad-banner">
+            <h4>📢 Alcance novos clientes</h4>
+            <p>Espaço nobre em nosso cardápio digital. Visibilidade garantida.</p>
+            <button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Quero%20anunciar%20no%20cardápio%20digital.','_blank')">Quero anunciar</button>
+        </div>
+
+        <!-- ================= 7° SEÇÃO: LINGUIÇAS ESPECIAIS ================= -->
+        <div class="section-image" id="img-linguiças">
+            <img src="https://i.ibb.co/Vc4TtzdZ/Screenshot-20260611-102720-Fotos.png" alt="Linguiças Especiais">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">🌭</span>
+            <div class="section-text">
+                Linguiças Especiais
+                <div class="section-sub">Sabores artesanais exclusivos</div>
+            </div>
+        </div>
+        <div id="linguiças-container"></div>
+
+        <!-- ================= 8° SEÇÃO: KITS SEMANAIS ================= -->
+        <div class="section-image" id="img-kits">
+            <img src="https://i.ibb.co/4nLyrN6F/Screenshot-20260611-102735-Fotos.png" alt="Kits Semanais">
+        </div>
+        <div class="section-title">
+            <span class="section-icon">📦</span>
+            <div class="section-text">
+                Kits Semanais
+                <div class="section-sub">Economia e praticidade</div>
+            </div>
+        </div>
+        <div id="kits-container"></div>
+
+        <!-- Horários e entregas + Endereço -->
+        <div class="info-box">
+            <div class="info-title">🕒 Horário de Funcionamento</div>
+            <p><strong>Segunda a Quinta:</strong> 08:00h às 19:30h</p>
+            <p><strong>Sexta e Sábado:</strong> 08:00h às 20:00h</p>
+            <p><strong>Domingos e Feriados:</strong> 08:00h às 13:00h</p>
+            
+            <div class="info-title" style="margin-top: 15px;">🛵 Serviço de Entregas</div>
+            <p><strong>Segunda a Sábado:</strong> 08:00h às 18:00h</p>
+            <p style="color: #bc1c1c; font-weight: bold;">⚠️ Não entregamos aos domingos e feriados.</p>
+
+            <div class="info-title" style="margin-top: 15px;">📍 Endereço</div>
+            <p>Praça Tancredo Silva Pinto, 148 - Jardim Brasília - Uberlândia - MG</p>
+        </div>
+    </div>
+
+    <!-- Botões flutuantes -->
+    <a href="https://wa.me/5534996623829?text=Olá!%20Gostaria%20de%20fazer%20um%20pedido" class="whatsapp-float" target="_blank">💬</a>
+    <button class="cart-float" id="cartFloatBtn">🛒 Meu Pedido <span class="cart-count" id="cartCount">0</span></button>
+
+    <!-- Modal do Carrinho (Meu Pedido) -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-modal-content">
+            <h3>📋 Meu Pedido</h3>
+            <div id="cartItemsList" class="cart-items-list"></div>
+            <div id="cartTotalModal" class="cart-total">Total: R$ 0,00</div>
+            
+            <div class="order-form">
+                <div class="form-group">
+                    <label>Seu nome *</label>
+                    <input type="text" id="customerName" placeholder="Digite seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label>Forma de pagamento *</label>
+                    <div class="radio-group" id="paymentGroup">
+                        <label><input type="radio" name="payment" value="Pix"> Pix</label>
+                        <label><input type="radio" name="payment" value="Cartão de Crédito"> Cartão de Crédito</label>
+                        <label><input type="radio" name="payment" value="Dinheiro"> Dinheiro</label>
+                    </div>
+                    <div id="changeField" class="conditional-field">
+                        <input type="text" id="changeAmount" placeholder="Troco para quanto? (ex: R$ 100,00)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Forma de entrega *</label>
+                    <div class="radio-group" id="deliveryGroup">
+                        <label><input type="radio" name="delivery" value="Retirada no Balcão"> Retirada no Balcão</label>
+                        <label><input type="radio" name="delivery" value="Delivery"> Delivery</label>
+                    </div>
+                    <div id="addressField" class="conditional-field">
+                        <input type="text" id="deliveryAddress" placeholder="Endereço completo (rua, número, bairro, referência)">
+                    </div>
+                </div>
+                <button id="sendOrderBtn" class="send-whatsapp-btn">📲 Enviar pedido via WhatsApp</button>
+                <button id="closeCartModalBtn" class="close-cart-btn">Voltar ao cardápio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Menu Fixa no Rodapé (agora com 8 itens - sem Localização) -->
+    <div class="footer-menu">
+        <table class="footer-table">
+            <tr>
+                <td class="footer-cell"><a href="#img-aves" class="footer-link" data-section="aves"><span class="footer-icon">🐔</span>Aves</a></td>
+                <td class="footer-cell"><a href="#img-bovinos" class="footer-link" data-section="bovinos"><span class="footer-icon">🥩</span>Bovinos</a></td>
+                <td class="footer-cell"><a href="#img-suinos" class="footer-link" data-section="suinos"><span class="footer-icon">🐷</span>Suínos</a></td>
+                <td class="footer-cell"><a href="#img-embutidos" class="footer-link" data-section="embutidos"><span class="footer-icon">🍖</span>Embutidos</a></td>
+                <td class="footer-cell"><a href="#img-especiais" class="footer-link" data-section="especiais"><span class="footer-icon">🏆</span>Casa</a></td>
+                <td class="footer-cell"><a href="#img-espetinhos" class="footer-link" data-section="espetinhos"><span class="footer-icon">🍢</span>Espetinhos</a></td>
+                <td class="footer-cell"><a href="#img-linguiças" class="footer-link" data-section="linguiças"><span class="footer-icon">🌭</span>Linguiças</a></td>
+                <td class="footer-cell"><a href="#img-kits" class="footer-link" data-section="kits"><span class="footer-icon">📦</span>Kits</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // ================= DADOS DO CARDÁPIO COMPLETOS =================
+        const menuData = {
+            aves: [
+                { nome: "Asa", desc: "Asas de frango frescas, perfeitas para fritar ou assar.", preco: 19.90, unidade: "/kg" },
+                { nome: "Asa completa", desc: "Asa com ponta e maior quantidade de carne.", preco: 21.90, unidade: "/kg" },
+                { nome: "Coração", desc: "Coração de frango limpo, suculento e ideal para churrasco.", preco: 45.90, unidade: "/kg", badge: "Churrasco" },
+                { nome: "Coxa sobrecoxa", desc: "Corte clássico com sabor marcante, ótimo para assados.", preco: 16.90, unidade: "/kg" },
+                { nome: "Coxinha da Asa", desc: "A parte mais macia da asa, também chamada de drumete.", preco: 24.90, unidade: "/kg" },
+                { nome: "Filé de frango", desc: "Peito de frango sem osso, cortado em filés finos.", preco: 26.90, unidade: "/kg", hidden: true },
+                { nome: "Frango Nhô Bento", desc: "Frango temperado especial no estilo caseiro.", preco: 20.90, unidade: "/kg", hidden: true },
+                { nome: "Frango inteiro", desc: "Frango inteiro resfriado.", preco: 16.49, unidade: "/kg", hidden: true },
+                { nome: "Frango Temperado", desc: "Tempero especial da casa.", preco: 19.90, unidade: "/kg", hidden: true },
+                { nome: "Moela congelada", desc: "Moelas limpas e congeladas.", preco: 14.90, unidade: "/kg", hidden: true },
+                { nome: "Peito com osso", desc: "Peito de frango com osso.", preco: 20.90, unidade: "/kg", hidden: true },
+                { nome: "Sobrecoxa", desc: "Parte da perna do frango.", preco: 18.90, unidade: "/kg", hidden: true },
+                { nome: "Tulipa", desc: "Sobrecoxa com osso aparado.", preco: 33.90, unidade: "/kg", hidden: true },
+                { nome: "Tulipa na mostarda", desc: "Marinada em mostarda e ervas.", preco: 35.90, unidade: "/kg", badge: "Destaque", hidden: true }
+            ],
+            bovinos: [
+                { nome: "Acém", desc: "Corte suculento e versátil, ideal para cozidos e assados.", preco: 36.90, unidade: "/kg" },
+                { nome: "Alcatra", desc: "Macia e saborosa, perfeita para bifes ou churrasco.", preco: 58.90, unidade: "/kg" },
+                { nome: "Bananinha", desc: "Corte nobre próximo à alcatra, muito macio.", preco: 40.90, unidade: "/kg" },
+                { nome: "Capa do Contra Filé", desc: "Capa gordurosa que garante sabor intenso na grelha.", preco: 47.90, unidade: "/kg" },
+                { nome: "Contra Filé", desc: "Clássico para churrasco, com textura firme e marcante.", preco: 61.90, unidade: "/kg", badge: "Mais Pedido" },
+                { nome: "Costela Gaúcha", desc: "Costela com osso, suculência garantida no fogo baixo.", preco: 30.90, unidade: "/kg", hidden: true },
+                { nome: "Costela Ripa", desc: "Cortes menores da costela, ótimos para churrasco rápido.", preco: 30.90, unidade: "/kg", hidden: true },
+                { nome: "Coxão Mole", desc: "Carne macia, muito usada em bifes e refogados.", preco: 49.90, unidade: "/kg", hidden: true },
+                { nome: "Cupim Grill", desc: "Cupim nobre para assar lentamente, extremamente macio.", preco: 71.90, unidade: "/kg", hidden: true },
+                { nome: "Cupim Temperado", desc: "Cupim já temperado com especiarias, pronto para o fogo.", preco: 49.90, unidade: "/kg", hidden: true },
+                { nome: "Dobradinha", desc: "Tradicional para feijoada ou ensopados.", preco: 23.90, unidade: "/kg", hidden: true },
+                { nome: "Fígado", desc: "Fígado bovino fresco, rico em ferro.", preco: 21.90, unidade: "/kg", hidden: true },
+                { nome: "Filé Mignon", desc: "O corte mais macio e nobre, ideal para ocasiões especiais.", preco: 69.90, unidade: "/kg", badge: "Nobre", hidden: true },
+                { nome: "Fraldinha", desc: "Muito saborosa e com boa marmorização, ótima na grelha.", preco: 56.90, unidade: "/kg", hidden: true },
+                { nome: "Lagarto", desc: "Corte magro, excelente para rosbife ou cozido.", preco: 49.90, unidade: "/kg", hidden: true },
+                { nome: "Maçã de Peito", desc: "Peito bovino desossado, perfeito para assar ou cozinhar.", preco: 46.90, unidade: "/kg", hidden: true },
+                { nome: "Maminha", desc: "Corte suculento e cheio de sabor, sucesso no churrasco.", preco: 58.90, unidade: "/kg", hidden: true },
+                { nome: "Miolo do Acém", desc: "Parte central do acém, mais macia e versátil.", preco: 40.90, unidade: "/kg", hidden: true },
+                { nome: "Mocotó", desc: "Osso com tutano, ideal para caldos e sopas.", preco: 14.90, unidade: "/kg", hidden: true },
+                { nome: "Músculo Dianteiro", desc: "Carne com bastante colágeno, ótima para cozidos.", preco: 41.90, unidade: "/kg", hidden: true },
+                { nome: "Músculo Traseiro", desc: "Mais macio que o dianteiro, também excelente para ensopados.", preco: 44.90, unidade: "/kg", hidden: true },
+                { nome: "Osso Buco", desc: "Corte com osso e tutano, famoso no preparo de vitello tonnato.", preco: 35.90, unidade: "/kg", hidden: true },
+                { nome: "Paleta", desc: "Carne suculenta, muito usada para assados de forno.", preco: 46.90, unidade: "/kg", hidden: true },
+                { nome: "Paletão", desc: "Corte maior da paleta, ideal para grandes assados.", preco: 46.90, unidade: "/kg", hidden: true },
+                { nome: "Patinho", desc: "Carne magra e muito utilizada em bifes e carnes moídas.", preco: 49.90, unidade: "/kg", hidden: true },
+                { nome: "Peixinho", desc: "Corte próximo ao filé mignon, macio e versátil.", preco: 46.90, unidade: "/kg", hidden: true },
+                { nome: "Picanha", desc: "A rainha do churrasco, suculenta e com capa de gordura inconfundível.", preco: 87.80, unidade: "/kg", badge: "Destaque", hidden: true },
+                { nome: "Ponta de Picanha", desc: "Extremidade da picanha, igualmente saborosa e mais acessível.", preco: 49.90, unidade: "/kg", hidden: true },
+                { nome: "Rabada", desc: "Corte clássico para rabada ensopada, cheia de sabor.", preco: 36.90, unidade: "/kg", hidden: true }
+            ],
+            suinos: [
+                { nome: "Barriga", desc: "Camadas de carne e gordura, perfeita para torresmo ou assados.", preco: 34.90, unidade: "/kg" },
+                { nome: "Bisteca", desc: "Corte com osso, muito saboroso na grelha ou frigideira.", preco: 25.90, unidade: "/kg" },
+                { nome: "Costelinha", desc: "Costelinha suína suculenta, ideal para churrasco ou forno.", preco: 34.90, unidade: "/kg", badge: "Destaque" },
+                { nome: "Lombo", desc: "Corte magro e macio, ótimo para bifes ou assados inteiros.", preco: 28.90, unidade: "/kg" },
+                { nome: "Miúdo de porco", desc: "Vísceras (fígado, rim, coração) para ensopados.", preco: 20.90, unidade: "/kg" },
+                { nome: "Paleta", desc: "Carne saborosa, muito usada em cozidos e assados.", preco: 25.90, unidade: "/kg", hidden: true },
+                { nome: "Paleta com osso", desc: "Paleta mantendo o osso, ideal para caldos e assados.", preco: 23.90, unidade: "/kg", hidden: true },
+                { nome: "Panceta", desc: "Barriga suína com couro, perfeita para torresmo ou pururuca.", preco: 34.90, unidade: "/kg", hidden: true },
+                { nome: "Pernil", desc: "Corte traseiro, muito utilizado em assados de forno.", preco: 27.90, unidade: "/kg", hidden: true },
+                { nome: "Pernil com osso", desc: "Pernil com osso, garante mais sabor ao cozimento.", preco: 25.90, unidade: "/kg", hidden: true },
+                { nome: "Picanha Suína", desc: "Corte nobre suíno, suculento e com capa de gordura.", preco: 29.90, unidade: "/kg", hidden: true },
+                { nome: "Suã", desc: "Parte dianteira do porco, ótima para feijoada.", preco: 15.90, unidade: "/kg", hidden: true },
+                { nome: "Suíno Cerrado", desc: "Carne de porco criado em sistema de pasto, mais saborosa.", preco: 23.90, unidade: "/kg", hidden: true },
+                { nome: "Toucinho para banha", desc: "Gordura suína para renderizar banha caseira.", preco: 20.90, unidade: "/kg", hidden: true },
+                { nome: "Toucinho para torresmo", desc: "Toucinho com couro, ideal para torresmo crocante.", preco: 34.90, unidade: "/kg", hidden: true }
+            ],
+            embutidos: [
+                { nome: "Bacon", desc: "Defumado em fatias, crocante e saboroso.", preco: 45.90, unidade: "/kg", badge: "Tradicional" },
+                { nome: "Calabresa", desc: "Linguiça calabresa defumada, ideal para churrasco e pizzas.", preco: 39.90, unidade: "/kg" },
+                { nome: "Frango empanado", desc: "Tiras ou filés de frango empanados, prontos para fritar.", preco: 38.90, unidade: "/kg" },
+                { nome: "Mini nuggets", desc: "Nuggets de frango, sucesso entre as crianças.", preco: 29.90, unidade: "/kg" },
+                { nome: "Provolone", desc: "Queijo provolone especial para grelhar, cremoso e defumado.", preco: 71.90, unidade: "/kg", badge: "Premium" },
+                { nome: "Salsicha", desc: "Salsicha tradicional para hot dog ou molhos.", preco: 16.90, unidade: "/kg", hidden: true }
+            ],
+            especiais: [
+                { nome: "Almôndega bovina", desc: "Almôndegas de carne bovina temperadas, prontas para molho.", preco: 39.90, unidade: "/kg" },
+                { nome: "Filé de frango empanado", desc: "Crocante e macio.", preco: 31.90, unidade: "/kg" },
+                { nome: "Franbacon à granel", desc: "Frango envolto em bacon, espetinho ou porção.", preco: 44.90, unidade: "/kg", badge: "Destaque" },
+                { nome: "Hambúrguer Artesanal", desc: "Hambúrguer bovino artesanal, suculento e saboroso.", preco: 39.90, unidade: "/kg" },
+                { nome: "Maia de Frango", desc: "Maionese de frango desfiado, ideal para sanduíches.", preco: 33.90, unidade: "/kg" },
+                { nome: "Maia de Vaca", desc: "Maionese de carne bovina desfiada, cremosa e temperada.", preco: 39.90, unidade: "/kg", hidden: true },
+                { nome: "Kibe", desc: "Kibe assado ou frito, recheado ou tradicional.", preco: 39.90, unidade: "/kg", hidden: true },
+                { nome: "Tulipa na Mostarda", desc: "Tulipa de frango marinada em mostarda especial.", preco: 35.90, unidade: "/kg", hidden: true },
+                { nome: "Vulcão", desc: "Peça única de carne recheada e temperada, explosão de sabores.", preco: 47.90, unidade: "/kg", badge: "Exclusivo", hidden: true }
+            ],
+            espetinhos: [
+                { nome: "Vaca", desc: "Espetinho bovino temperado.", preco: 43.90, unidade: "/kg" },
+                { nome: "Porco", desc: "Espetinho suíno macio.", preco: 28.90, unidade: "/kg" },
+                { nome: "Fran bacon (pacote com 6 unidades)", desc: "6 espetinhos de frango com bacon.", preco: 33.90, unidade: "pacote" },
+                { nome: "Kafta", desc: "Carne moída temperada.", preco: 39.90, unidade: "/kg" }
+            ],
+            linguiças: [
+                { nome: "Costela e mandioca", desc: "Linguiça artesanal com pedaços de costela e mandioca.", preco: 35.90, unidade: "/kg" },
+                { nome: "Frango e bacon", desc: "Linguiça de frango com pedaços de bacon defumado.", preco: 33.90, unidade: "/kg" },
+                { nome: "Toscana de frango", desc: "Versão leve da tradicional toscana, feita com frango.", preco: 26.90, unidade: "/kg" },
+                { nome: "Frango fina", desc: "Linguiça de frango moída fina, tempero suave.", preco: 32.90, unidade: "/kg" },
+                { nome: "Pernil temperada", desc: "Linguiça de pernil suíno com tempero especial da casa.", preco: 32.90, unidade: "/kg" },
+                { nome: "Pernil fina", desc: "Linguiça de pernil com moagem fina, textura macia.", preco: 37.90, unidade: "/kg", hidden: true },
+                { nome: "Pernil apimentada", desc: "Linguiça de pernil com toque picante de pimenta.", preco: 32.90, unidade: "/kg", badge: "Picante", hidden: true },
+                { nome: "Pernil, bacon e azeitona", desc: "Combinação de pernil, bacon e azeitonas verdes.", preco: 32.90, unidade: "/kg", hidden: true },
+                { nome: "Toscana de porco", desc: "Linguiça toscana tradicional, muito saborosa.", preco: 31.90, unidade: "/kg", badge: "Tradicional", hidden: true },
+                { nome: "Marguerita", desc: "Linguiça com manjericão, tomate seco e queijo.", preco: 36.90, unidade: "/kg", hidden: true },
+                { nome: "Rúcula com queijo", desc: "Linguiça com rúcula e queijo derretido.", preco: 36.90, unidade: "/kg", hidden: true },
+                { nome: "Jiló", desc: "Linguiça com pedaços de jiló, sabor único e tradicional.", preco: 33.90, unidade: "/kg", hidden: true }
+            ],
+            kits: [
+                { nome: "Kit Semanal Fim de Mês", desc: "2kg de carne. Economia garantida!", preco: 75.90, unidade: "kit", kit: true, composicao: "✓ Coxão Mole (0,4kg)<br>✓ Pernil (0,4kg)<br>✓ Filé frango (0,4kg)<br>✓ Coxinha da Asa (0,4kg)<br>✓ Miolo do acém (0,4kg)", badge: "Economia" },
+                { nome: "Kit Semanal Quebra Galho", desc: "2,5kg de carne. Ideal para a semana toda!", preco: 84.90, unidade: "kit", kit: true, composicao: "✓ Acém moído (0,5kg)<br>✓ Paletão (0,5kg)<br>✓ Pernil em cubos (0,5kg)<br>✓ Coxa sobrecoxa (0,5kg)<br>✓ Filé frango (0,5kg)", badge: "Mais Vendido" },
+                { nome: "Kit Semanal Econômico", desc: "2,5kg de carne. Custo-benefício imbatível!", preco: 88.90, unidade: "kit", kit: true, composicao: "✓ Patinho (0,5kg)<br>✓ Acém moída (0,5kg)<br>✓ Linguiça toscana frango (0,5kg)<br>✓ Frango temperado (0,5kg)<br>✓ Pernil em cubos (0,5kg)", badge: "Recomendado" },
+                { nome: "Kit Semanal Basic", desc: "3kg de carne. O kit completo para a família!", preco: 119.90, unidade: "kit", kit: true, composicao: "✓ Coxão Mole (0,6kg)<br>✓ Acém moída (0,6kg)<br>✓ Almôndega (0,6kg)<br>✓ Ling. Pernil temperada (0,6kg)<br>✓ Filé Frango (0,6kg)", badge: "Família" }
+            ]
+        };
+
+        // ================= CARRINHO =================
+        let cart = [];
+
+        function addToCart(item) {
+            cart.push(item);
+            updateCartUI();
+            saveCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            saveCart();
+            renderCartModal();
+        }
+
+        function editCartItem(index) {
+            const item = cart[index];
+            if (!item) return;
+            const newQuantidade = prompt(`Editar quantidade (${item.unidade}):`, item.quantidade);
+            if (newQuantidade !== null && !isNaN(parseFloat(newQuantidade)) && parseFloat(newQuantidade) > 0) {
+                const qtd = parseFloat(newQuantidade);
+                item.quantidade = qtd;
+                item.subtotal = item.precoUnit * qtd;
+                updateCartUI();
+                saveCart();
+                renderCartModal();
+            }
+        }
+
+        function updateCartUI() {
+            const totalItens = cart.length;
+            document.getElementById('cartCount').innerText = totalItens;
+            renderCartModal();
+        }
+
+        function saveCart() {
+            localStorage.setItem('casaCarnesCart', JSON.stringify(cart));
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('casaCarnesCart');
+            if (saved) {
+                try {
+                    cart = JSON.parse(saved);
+                    updateCartUI();
+                } catch(e) { cart = []; }
+            }
+        }
+
+        function getTotal() {
+            return cart.reduce((acc, item) => acc + item.subtotal, 0);
+        }
+
+        function renderCartModal() {
+            const container = document.getElementById('cartItemsList');
+            const totalSpan = document.getElementById('cartTotalModal');
+            if (!container) return;
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center;">Seu pedido está vazio.</p>';
+                totalSpan.innerHTML = 'Total: R$ 0,00';
+                return;
+            }
+            let html = '';
+            cart.forEach((item, idx) => {
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.nome}</div>
+                            <div class="cart-item-price">${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = R$ ${item.subtotal.toFixed(2)}</div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="cart-item-edit" data-editindex="${idx}">✏️</button>
+                            <button class="cart-item-remove" data-index="${idx}">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            totalSpan.innerHTML = `Total: R$ ${getTotal().toFixed(2)}`;
+            document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.index);
+                    removeFromCart(idx);
+                });
+            });
+            document.querySelectorAll('.cart-item-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.dataset.editindex);
+                    editCartItem(idx);
+                });
+            });
+        }
+
+        function renderSection(sectionKey, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const itens = menuData[sectionKey];
+            if (!itens) return;
+
+            const visiveis = itens.filter(i => !i.hidden);
+            const ocultos = itens.filter(i => i.hidden);
+
+            function gerarCard(item) {
+                const badgeHtml = item.badge ? `<span class="item-badge">${item.badge}</span>` : '';
+                const kitHtml = (item.kit && item.composicao) ? `<div class="kit-composition"><strong>📋 Composição:</strong><br>${item.composicao}</div>` : '';
+                const unidadeLabel = (item.unidade === "/kg") ? "kg" : (item.unidade === "pacote" ? "pacotes" : (item.unidade === "kit" ? "kits" : "unidades"));
+                const step = (item.unidade === "/kg") ? 0.1 : 1;
+                const min = (item.unidade === "/kg") ? 0.1 : 1;
+                return `
+                    <div class="menu-item-card">
+                        <div class="item-header">
+                            <span class="item-name">${item.nome}</span>
+                            <span class="item-price">R$ ${item.preco.toFixed(2)} / ${item.unidade === "/kg" ? "kg" : item.unidade}</span>
+                        </div>
+                        <div class="item-desc">${item.desc}</div>
+                        ${badgeHtml}
+                        ${kitHtml}
+                        <div class="quantidade-area">
+                            <label>Quantidade (${unidadeLabel}):</label>
+                            <input type="number" class="quantidade-input" value="1" step="${step}" min="${min}" data-preco="${item.preco}" data-unidade="${item.unidade}">
+                            <span class="subtotal">Subtotal: R$ ${item.preco.toFixed(2)}</span>
+                        </div>
+                        <button class="btn-add-item" data-nome="${item.nome}" data-preco="${item.preco}" data-unidade="${item.unidade}">➕ Adicionar ao pedido</button>
+                    </div>
+                `;
+            }
+
+            let html = '';
+            visiveis.forEach(item => { html += gerarCard(item); });
+            if (ocultos.length > 0) {
+                let hiddenHtml = '<div class="hidden-items" id="hidden-'+sectionKey+'">';
+                ocultos.forEach(item => { hiddenHtml += gerarCard(item); });
+                hiddenHtml += '</div>';
+                html += hiddenHtml;
+                html += `<button class="show-more-btn" onclick="toggleHidden('hidden-${sectionKey}', this)">➕ Mostrar mais opções (${ocultos.length} itens)</button>`;
+            }
+            container.innerHTML = html;
+
+            container.querySelectorAll('.quantidade-input').forEach(input => {
+                input.addEventListener('input', function(e) {
+                    const preco = parseFloat(this.dataset.preco);
+                    let qtd = parseFloat(this.value);
+                    if (isNaN(qtd)) qtd = 1;
+                    const subtotal = preco * qtd;
+                    const subtotalSpan = this.parentElement.querySelector('.subtotal');
+                    if (subtotalSpan) subtotalSpan.innerText = `Subtotal: R$ ${subtotal.toFixed(2)}`;
+                });
+            });
+
+            container.querySelectorAll('.btn-add-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nome = btn.dataset.nome;
+                    const precoUnit = parseFloat(btn.dataset.preco);
+                    const unidade = btn.dataset.unidade;
+                    const card = btn.closest('.menu-item-card');
+                    const qtdInput = card.querySelector('.quantidade-input');
+                    let quantidade = parseFloat(qtdInput.value);
+                    if (isNaN(quantidade) || quantidade <= 0) quantidade = 1;
+                    const subtotal = precoUnit * quantidade;
+                    addToCart({ nome, precoUnit, quantidade, unidade, subtotal });
+                });
+            });
+        }
+
+        function toggleHidden(hiddenId, button) {
+            const hiddenDiv = document.getElementById(hiddenId);
+            if (hiddenDiv.classList.contains('show')) {
+                hiddenDiv.classList.remove('show');
+                const count = hiddenDiv.children.length;
+                button.innerHTML = `➕ Mostrar mais opções (${count} itens)`;
+            } else {
+                hiddenDiv.classList.add('show');
+                const count = hiddenDiv.children.length;
+                button.innerHTML = `➖ Mostrar menos opções (${count} itens)`;
+            }
+        }
+
+        renderSection('aves', 'aves-container');
+        renderSection('bovinos', 'bovinos-container');
+        renderSection('suinos', 'suinos-container');
+        renderSection('embutidos', 'embutidos-container');
+        renderSection('especiais', 'especiais-container');
+        renderSection('espetinhos', 'espetinhos-container');
+        renderSection('linguiças', 'linguiças-container');
+        renderSection('kits', 'kits-container');
+
+        // ================= AJUSTE DINÂMICO DO OFFSET =================
+        function getHeaderHeight() {
+            const header = document.querySelector('.header');
+            return header ? header.offsetHeight : 100;
+        }
+
+        function getBannerHeight() {
+            const banner = document.getElementById('slidingBanner');
+            return banner ? banner.offsetHeight : 0;
+        }
+
+        function aplicarScrollMargin() {
+            const headerHeight = getHeaderHeight();
+            const bannerHeight = getBannerHeight();
+            const totalOffset = headerHeight + bannerHeight + 10;
+            document.querySelectorAll('.section-image').forEach(img => {
+                img.style.scrollMarginTop = `${totalOffset}px`;
+            });
+        }
+
+        function ajustarBannerTop() {
+            const header = document.querySelector('.header');
+            const banner = document.getElementById('slidingBanner');
+            if (header && banner) {
+                const headerHeight = header.offsetHeight;
+                banner.style.top = `${headerHeight}px`;
+            }
+        }
+
+        function scrollToElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const headerHeight = getHeaderHeight();
+            const bannerHeight = getBannerHeight();
+            const offset = headerHeight + bannerHeight + 5;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+        }
+
+        function configurarLinksMenu() {
+            document.querySelectorAll('.footer-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    scrollToElement(targetId);
+                });
+            });
+        }
+
+        let observer = null;
+        function configurarObserver() {
+            if (observer) observer.disconnect();
+            const headerHeight = getHeaderHeight();
+            const bannerHeight = getBannerHeight();
+            const totalOffset = headerHeight + bannerHeight + 10;
+            const rootMargin = `-${totalOffset}px 0px -70% 0px`;
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let sectionId = sectionMap[entry.target.id];
+                        if (sectionId) setActiveLink(sectionId);
+                    }
+                });
+            }, { root: null, rootMargin, threshold: 0 });
+            const allIds = [...imageIds];
+            allIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        }
+
+        function atualizarOffsets() {
+            ajustarBannerTop();
+            aplicarScrollMargin();
+            configurarObserver();
+        }
+
+        const imageIds = ['img-aves', 'img-bovinos', 'img-suinos', 'img-embutidos', 'img-especiais', 'img-espetinhos', 'img-linguiças', 'img-kits'];
+        const sectionMap = {
+            'img-aves': 'aves', 'img-bovinos': 'bovinos', 'img-suinos': 'suinos', 'img-embutidos': 'embutidos',
+            'img-especiais': 'especiais', 'img-espetinhos': 'espetinhos', 'img-linguiças': 'linguiças', 'img-kits': 'kits'
+        };
+        function setActiveLink(sectionId) {
+            document.querySelectorAll('.footer-link').forEach(link => {
+                if (link.getAttribute('data-section') === sectionId) link.classList.add('active');
+                else link.classList.remove('active');
+            });
+        }
+
+        window.addEventListener('load', () => {
+            configurarLinksMenu();
+            atualizarOffsets();
+            setTimeout(() => {
+                let firstVisible = null;
+                const headerHeight = getHeaderHeight();
+                const bannerHeight = getBannerHeight();
+                const offset = headerHeight + bannerHeight + 50;
+                for (let id of imageIds) {
+                    const el = document.getElementById(id);
+                    if (el && el.getBoundingClientRect().top <= offset) {
+                        firstVisible = sectionMap[id];
+                        break;
+                    }
+                }
+                setActiveLink(firstVisible || 'aves');
+            }, 200);
+        });
+        window.addEventListener('resize', () => {
+            atualizarOffsets();
+        });
+
+        // Status de entrega
+        function atualizarStatusEntrega() {
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours();
+            const min = now.getMinutes();
+            const current = hour + min/60;
+            const badge = document.getElementById('statusBadge');
+            if (day === 0) {
+                badge.className = 'status-badge fechado';
+                badge.innerHTML = '❌ Domingo não realizamos entregas';
+            } else if (day >= 1 && day <= 6 && current >= 8 && current < 18) {
+                badge.className = 'status-badge aberto';
+                badge.innerHTML = '✅ Entregas abertas! (08h às 18h)';
+            } else {
+                badge.className = 'status-badge fechado';
+                badge.innerHTML = '❌ Entregas apenas das 08h às 18h (segunda a sábado)';
+            }
+        }
+        atualizarStatusEntrega();
+        setInterval(atualizarStatusEntrega, 60000);
+
+        // ================= LÓGICA DO MODAL =================
+        const cartModal = document.getElementById('cartModal');
+        const cartFloatBtn = document.getElementById('cartFloatBtn');
+        const closeCartBtn = document.getElementById('closeCartModalBtn');
+        const sendOrderBtn = document.getElementById('sendOrderBtn');
+
+        const paymentRadios = document.querySelectorAll('input[name="payment"]');
+        const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+        const changeField = document.getElementById('changeField');
+        const addressField = document.getElementById('addressField');
+
+        function toggleConditionalFields() {
+            let selectedPayment = null;
+            paymentRadios.forEach(r => { if (r.checked) selectedPayment = r.value; });
+            if (selectedPayment === 'Dinheiro') {
+                changeField.style.display = 'block';
+            } else {
+                changeField.style.display = 'none';
+                document.getElementById('changeAmount').value = '';
+            }
+            let selectedDelivery = null;
+            deliveryRadios.forEach(r => { if (r.checked) selectedDelivery = r.value; });
+            if (selectedDelivery === 'Delivery') {
+                addressField.style.display = 'block';
+            } else {
+                addressField.style.display = 'none';
+                document.getElementById('deliveryAddress').value = '';
+            }
+        }
+
+        paymentRadios.forEach(r => r.addEventListener('change', toggleConditionalFields));
+        deliveryRadios.forEach(r => r.addEventListener('change', toggleConditionalFields));
+
+        function sendOrderToWhatsApp() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio. Adicione itens antes de finalizar.');
+                return;
+            }
+            const nome = document.getElementById('customerName').value.trim();
+            if (nome === '') {
+                alert('Por favor, informe seu nome.');
+                return;
+            }
+            let payment = null;
+            paymentRadios.forEach(r => { if (r.checked) payment = r.value; });
+            if (!payment) {
+                alert('Selecione a forma de pagamento.');
+                return;
+            }
+            let troco = '';
+            if (payment === 'Dinheiro') {
+                const trocoValor = document.getElementById('changeAmount').value.trim();
+                if (trocoValor === '') {
+                    alert('Informe o valor para troco (ex: R$ 100,00)');
+                    return;
+                }
+                troco = `\n💰 *Troco para:* ${trocoValor}`;
+            }
+            let delivery = null;
+            deliveryRadios.forEach(r => { if (r.checked) delivery = r.value; });
+            if (!delivery) {
+                alert('Selecione a forma de entrega.');
+                return;
+            }
+            let endereco = '';
+            if (delivery === 'Delivery') {
+                const addr = document.getElementById('deliveryAddress').value.trim();
+                if (addr === '') {
+                    alert('Informe o endereço completo para entrega.');
+                    return;
+                }
+                endereco = `\n📍 *Endereço:* ${addr}`;
+            }
+
+            let itensTexto = '';
+            cart.forEach((item, idx) => {
+                itensTexto += `${idx+1}. *${item.nome}* – ${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = *R$ ${item.subtotal.toFixed(2)}*\n`;
+            });
+            const total = getTotal().toFixed(2);
+            const mensagem = `🍖 *NOVO PEDIDO - CASA DE CARNES DENILSON* 🍖\n\n` +
+                `👤 *Cliente:* ${nome}\n\n` +
+                `📋 *ITENS DO PEDIDO:*\n${itensTexto}\n` +
+                `💰 *Total do pedido:* R$ ${total}\n\n` +
+                `💳 *Pagamento:* ${payment}${troco}\n` +
+                `🚚 *Entrega:* ${delivery}${endereco}\n\n` +
+                `⏱️ *Pedido gerado via cardápio digital* – Aguardamos confirmação.`;
+
+            const numero = '5534996623829';
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+            if (confirm('Pedido enviado! Deseja limpar o carrinho?')) {
+                cart = [];
+                updateCartUI();
+                saveCart();
+            }
+            cartModal.classList.remove('active');
+        }
+
+        cartFloatBtn.addEventListener('click', () => {
+            renderCartModal();
+            cartModal.classList.add('active');
+            toggleConditionalFields();
+        });
+        closeCartBtn.addEventListener('click', () => cartModal.classList.remove('active'));
+        sendOrderBtn.addEventListener('click', sendOrderToWhatsApp);
+        cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.classList.remove('active'); });
+        loadCart();
+    </script>
+</body>
+</html>
