@@ -680,6 +680,66 @@
             font-weight: bold;
         }
 
+        /* Modal de Agendamento (novo) */
+        .agendamento-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(5px);
+            z-index: 10010;
+            justify-content: center;
+            align-items: center;
+        }
+        .agendamento-modal.active {
+            display: flex;
+        }
+        .agendamento-content {
+            background: white;
+            max-width: 400px;
+            width: 85%;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+        }
+        .agendamento-content h3 {
+            color: #9e1b1b;
+            margin-bottom: 12px;
+        }
+        .agendamento-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .agendamento-content input, .agendamento-content select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+        }
+        .btn-agendar {
+            background-color: #9e1b1b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-cancelar-agendamento {
+            background: none;
+            border: none;
+            color: #888;
+            margin-top: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
         @media (max-width: 550px) {
             .footer-link {
                 font-size: 6.5pt;
@@ -734,7 +794,7 @@
         <div class="status-badge" id="statusBadge">● Carregando...</div>
     </div>
 
-    <!-- BANNER DESLIZANTE (sticky, fora do container) -->
+    <!-- BANNER DESLIZANTE -->
     <div class="sliding-banner" id="slidingBanner">
         <div class="slide-text">
             <span>🔥 CONFIRA NOSSOS KITS SEMANAIS 🔥</span>
@@ -747,135 +807,52 @@
     </div>
 
     <div class="container">
-        <!-- ================= 1° SEÇÃO: AVES ================= -->
-        <div class="section-image" id="img-aves">
-            <img src="https://i.ibb.co/B5ccZ8Wx/Screenshot-20260610-234931-Fotos.png" alt="Destaque Aves">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🐔</span>
-            <div class="section-text">
-                Aves
-                <div class="section-sub">Frangos e derivados selecionados</div>
-            </div>
-        </div>
+        <!-- SEÇÕES (mantidas iguais) -->
+        <div class="section-image" id="img-aves"><img src="https://i.ibb.co/B5ccZ8Wx/Screenshot-20260610-234931-Fotos.png" alt="Destaque Aves"></div>
+        <div class="section-title"><span class="section-icon">🐔</span><div class="section-text">Aves<div class="section-sub">Frangos e derivados selecionados</div></div></div>
         <div id="aves-container"></div>
 
-        <!-- ================= 2° SEÇÃO: CARNES BOVINAS ================= -->
-        <div class="section-image" id="img-bovinos">
-            <img src="https://i.ibb.co/fgbPjgx/Screenshot-20260610-235012-Fotos.png" alt="Destaque Carnes Bovinas">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🥩</span>
-            <div class="section-text">
-                Carnes Bovinas
-                <div class="section-sub">Cortes nobres e tradicionais</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-bovinos"><img src="https://i.ibb.co/fgbPjgx/Screenshot-20260610-235012-Fotos.png" alt="Destaque Carnes Bovinas"></div>
+        <div class="section-title"><span class="section-icon">🥩</span><div class="section-text">Carnes Bovinas<div class="section-sub">Cortes nobres e tradicionais</div></div></div>
         <div id="bovinos-container"></div>
 
-        <!-- BANNER PUBLICITÁRIO 1 (entre Bovinos e Suínos) -->
-        <div class="ad-banner">
-            <h4>🚀 Destaque sua marca</h4>
-            <p>Seu negócio visto por centenas de clientes. Espaço promocional.</p>
-            <button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Tenho%20interesse%20em%20anunciar%20no%20cardápio%20digital.','_blank')">Anunciar</button>
-        </div>
+        <div class="ad-banner"><h4>🚀 Destaque sua marca</h4><p>Seu negócio visto por centenas de clientes. Espaço promocional.</p><button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Tenho%20interesse%20em%20anunciar%20no%20cardápio%20digital.','_blank')">Anunciar</button></div>
 
-        <!-- ================= 3° SEÇÃO: CARNES SUÍNAS ================= -->
-        <div class="section-image" id="img-suinos">
-            <img src="https://i.ibb.co/QjmFLPrx/Screenshot-20260611-000035-Fotos.png" alt="Destaque Carnes Suínas">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🐷</span>
-            <div class="section-text">
-                Carnes Suínas
-                <div class="section-sub">Cortes selecionados do porco</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-suinos"><img src="https://i.ibb.co/QjmFLPrx/Screenshot-20260611-000035-Fotos.png" alt="Destaque Carnes Suínas"></div>
+        <div class="section-title"><span class="section-icon">🐷</span><div class="section-text">Carnes Suínas<div class="section-sub">Cortes selecionados do porco</div></div></div>
         <div id="suinos-container"></div>
 
-        <!-- ================= 4° SEÇÃO: EMBUTIDOS & OUTROS ================= -->
-        <div class="section-image" id="img-embutidos">
-            <img src="https://i.ibb.co/gZ38k5hC/Screenshot-20260611-102325-Fotos.png" alt="Embutidos e Outros">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🍖</span>
-            <div class="section-text">
-                Embutidos & Outros
-                <div class="section-sub">Linguiças, defumados e especiais</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-embutidos"><img src="https://i.ibb.co/gZ38k5hC/Screenshot-20260611-102325-Fotos.png" alt="Embutidos e Outros"></div>
+        <div class="section-title"><span class="section-icon">🍖</span><div class="section-text">Embutidos & Outros<div class="section-sub">Linguiças, defumados e especiais</div></div></div>
         <div id="embutidos-container"></div>
 
-        <!-- ================= 5° SEÇÃO: ESPECIALIDADES DA CASA ================= -->
-        <div class="section-image" id="img-especiais">
-            <img src="https://i.ibb.co/7NryLw5N/Screenshot-20260611-101645-Fotos.png" alt="Especialidades da Casa">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🏆</span>
-            <div class="section-text">
-                Especialidades da Casa
-                <div class="section-sub">Receitas exclusivas Denilson</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-especiais"><img src="https://i.ibb.co/7NryLw5N/Screenshot-20260611-101645-Fotos.png" alt="Especialidades da Casa"></div>
+        <div class="section-title"><span class="section-icon">🏆</span><div class="section-text">Especialidades da Casa<div class="section-sub">Receitas exclusivas Denilson</div></div></div>
         <div id="especiais-container"></div>
 
-        <!-- ================= 6° SEÇÃO: ESPETINHOS ================= -->
-        <div class="section-image" id="img-espetinhos">
-            <img src="https://i.ibb.co/Tq70QhYK/Screenshot-20260611-101659-Fotos.png" alt="Espetinhos">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🍢</span>
-            <div class="section-text">
-                Espetinhos
-                <div class="section-sub">Espetinhos prontos para o churrasco</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-espetinhos"><img src="https://i.ibb.co/Tq70QhYK/Screenshot-20260611-101659-Fotos.png" alt="Espetinhos"></div>
+        <div class="section-title"><span class="section-icon">🍢</span><div class="section-text">Espetinhos<div class="section-sub">Espetinhos prontos para o churrasco</div></div></div>
         <div id="espetinhos-container"></div>
 
-        <!-- BANNER PUBLICITÁRIO 2 (entre Espetinhos e Linguiças) -->
-        <div class="ad-banner">
-            <h4>📢 Alcance novos clientes</h4>
-            <p>Espaço nobre em nosso cardápio digital. Visibilidade garantida.</p>
-            <button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Quero%20anunciar%20no%20cardápio%20digital.','_blank')">Quero anunciar</button>
-        </div>
+        <div class="ad-banner"><h4>📢 Alcance novos clientes</h4><p>Espaço nobre em nosso cardápio digital. Visibilidade garantida.</p><button onclick="window.open('https://wa.me/5534991058994?text=Olá!%20Quero%20anunciar%20no%20cardápio%20digital.','_blank')">Quero anunciar</button></div>
 
-        <!-- ================= 7° SEÇÃO: LINGUIÇAS ESPECIAIS ================= -->
-        <div class="section-image" id="img-linguiças">
-            <img src="https://i.ibb.co/Vc4TtzdZ/Screenshot-20260611-102720-Fotos.png" alt="Linguiças Especiais">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">🌭</span>
-            <div class="section-text">
-                Linguiças Especiais
-                <div class="section-sub">Sabores artesanais exclusivos</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-linguiças"><img src="https://i.ibb.co/Vc4TtzdZ/Screenshot-20260611-102720-Fotos.png" alt="Linguiças Especiais"></div>
+        <div class="section-title"><span class="section-icon">🌭</span><div class="section-text">Linguiças Especiais<div class="section-sub">Sabores artesanais exclusivos</div></div></div>
         <div id="linguiças-container"></div>
 
-        <!-- ================= 8° SEÇÃO: KITS SEMANAIS ================= -->
-        <div class="section-image" id="img-kits">
-            <img src="https://i.ibb.co/4nLyrN6F/Screenshot-20260611-102735-Fotos.png" alt="Kits Semanais">
-        </div>
-        <div class="section-title">
-            <span class="section-icon">📦</span>
-            <div class="section-text">
-                Kits Semanais
-                <div class="section-sub">Economia e praticidade</div>
-            </div>
-        </div>
+        <div class="section-image" id="img-kits"><img src="https://i.ibb.co/4nLyrN6F/Screenshot-20260611-102735-Fotos.png" alt="Kits Semanais"></div>
+        <div class="section-title"><span class="section-icon">📦</span><div class="section-text">Kits Semanais<div class="section-sub">Economia e praticidade</div></div></div>
         <div id="kits-container"></div>
 
-        <!-- Horários e entregas + Endereço -->
+        <!-- Horários e entregas -->
         <div class="info-box">
             <div class="info-title">🕒 Horário de Funcionamento</div>
             <p><strong>Segunda a Quinta:</strong> 08:00h às 19:30h</p>
             <p><strong>Sexta e Sábado:</strong> 08:00h às 20:00h</p>
             <p><strong>Domingos e Feriados:</strong> 08:00h às 13:00h</p>
-            
             <div class="info-title" style="margin-top: 15px;">🛵 Serviço de Entregas</div>
             <p><strong>Segunda a Sábado:</strong> 08:00h às 18:00h</p>
             <p style="color: #bc1c1c; font-weight: bold;">⚠️ Não entregamos aos domingos e feriados.</p>
-
             <div class="info-title" style="margin-top: 15px;">📍 Endereço</div>
             <p>Praça Tancredo Silva Pinto, 148 - Jardim Brasília - Uberlândia - MG</p>
         </div>
@@ -885,18 +862,14 @@
     <a href="https://wa.me/5534996623829?text=Olá!%20Gostaria%20de%20fazer%20um%20pedido" class="whatsapp-float" target="_blank">💬</a>
     <button class="cart-float" id="cartFloatBtn">🛒 Meu Pedido <span class="cart-count" id="cartCount">0</span></button>
 
-    <!-- Modal do Carrinho (Meu Pedido) -->
+    <!-- Modal do Carrinho -->
     <div id="cartModal" class="cart-modal">
         <div class="cart-modal-content">
             <h3>📋 Meu Pedido</h3>
             <div id="cartItemsList" class="cart-items-list"></div>
             <div id="cartTotalModal" class="cart-total">Total: R$ 0,00</div>
-            
             <div class="order-form">
-                <div class="form-group">
-                    <label>Seu nome *</label>
-                    <input type="text" id="customerName" placeholder="Digite seu nome completo">
-                </div>
+                <div class="form-group"><label>Seu nome *</label><input type="text" id="customerName" placeholder="Digite seu nome completo"></div>
                 <div class="form-group">
                     <label>Forma de pagamento *</label>
                     <div class="radio-group" id="paymentGroup">
@@ -904,9 +877,7 @@
                         <label><input type="radio" name="payment" value="Cartão de Crédito"> Cartão de Crédito</label>
                         <label><input type="radio" name="payment" value="Dinheiro"> Dinheiro</label>
                     </div>
-                    <div id="changeField" class="conditional-field">
-                        <input type="text" id="changeAmount" placeholder="Troco para quanto? (ex: R$ 100,00)">
-                    </div>
+                    <div id="changeField" class="conditional-field"><input type="text" id="changeAmount" placeholder="Troco para quanto? (ex: R$ 100,00)"></div>
                 </div>
                 <div class="form-group">
                     <label>Forma de entrega *</label>
@@ -914,9 +885,7 @@
                         <label><input type="radio" name="delivery" value="Retirada no Balcão"> Retirada no Balcão</label>
                         <label><input type="radio" name="delivery" value="Delivery"> Delivery</label>
                     </div>
-                    <div id="addressField" class="conditional-field">
-                        <input type="text" id="deliveryAddress" placeholder="Endereço completo (rua, número, bairro, referência)">
-                    </div>
+                    <div id="addressField" class="conditional-field"><input type="text" id="deliveryAddress" placeholder="Endereço completo (rua, número, bairro, referência)"></div>
                 </div>
                 <button id="sendOrderBtn" class="send-whatsapp-btn">📲 Enviar pedido via WhatsApp</button>
                 <button id="closeCartModalBtn" class="close-cart-btn">Voltar ao cardápio</button>
@@ -924,7 +893,23 @@
         </div>
     </div>
 
-    <!-- Barra de Menu Fixa no Rodapé (agora com 8 itens - sem Localização) -->
+    <!-- NOVO MODAL DE AGENDAMENTO -->
+    <div id="agendamentoModal" class="agendamento-modal">
+        <div class="agendamento-content">
+            <h3>📅 Fora do horário de entregas</h3>
+            <p>No momento as entregas não estão disponíveis (segunda a sábado, 8h às 18h).<br>Deseja agendar seu pedido para um próximo dia/horário?</p>
+            <label>Data desejada:</label>
+            <input type="date" id="agendamentoData" min="">
+            <label>Turno preferencial:</label>
+            <select id="agendamentoTurno">
+                <option value="Manhã (8h-12h)">Manhã (8h-12h)</option>
+                <option value="Tarde (12h-18h)">Tarde (12h-18h)</option>
+            </select>
+            <button class="btn-agendar" id="confirmarAgendamentoBtn">✅ Agendar e enviar pedido</button>
+            <button class="btn-cancelar-agendamento" id="cancelarAgendamentoBtn">Cancelar</button>
+        </div>
+    </div>
+
     <div class="footer-menu">
         <table class="footer-table">
             <tr>
@@ -941,7 +926,7 @@
     </div>
 
     <script>
-        // ================= DADOS DO CARDÁPIO COMPLETOS =================
+        // ================= DADOS DO CARDÁPIO (mantidos iguais) =================
         const menuData = {
             aves: [
                 { nome: "Asa", desc: "Asas de frango frescas, perfeitas para fritar ou assar.", preco: 19.90, unidade: "/kg" },
@@ -1054,22 +1039,10 @@
             ]
         };
 
-        // ================= CARRINHO =================
+        // ================= CARRINHO (código mantido) =================
         let cart = [];
-
-        function addToCart(item) {
-            cart.push(item);
-            updateCartUI();
-            saveCart();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-            saveCart();
-            renderCartModal();
-        }
-
+        function addToCart(item) { cart.push(item); updateCartUI(); saveCart(); }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); saveCart(); renderCartModal(); }
         function editCartItem(index) {
             const item = cart[index];
             if (!item) return;
@@ -1078,110 +1051,44 @@
                 const qtd = parseFloat(newQuantidade);
                 item.quantidade = qtd;
                 item.subtotal = item.precoUnit * qtd;
-                updateCartUI();
-                saveCart();
-                renderCartModal();
+                updateCartUI(); saveCart(); renderCartModal();
             }
         }
-
-        function updateCartUI() {
-            const totalItens = cart.length;
-            document.getElementById('cartCount').innerText = totalItens;
-            renderCartModal();
-        }
-
-        function saveCart() {
-            localStorage.setItem('casaCarnesCart', JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            const saved = localStorage.getItem('casaCarnesCart');
-            if (saved) {
-                try {
-                    cart = JSON.parse(saved);
-                    updateCartUI();
-                } catch(e) { cart = []; }
-            }
-        }
-
-        function getTotal() {
-            return cart.reduce((acc, item) => acc + item.subtotal, 0);
-        }
-
+        function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; renderCartModal(); }
+        function saveCart() { localStorage.setItem('casaCarnesCart', JSON.stringify(cart)); }
+        function loadCart() { const saved = localStorage.getItem('casaCarnesCart'); if (saved) try { cart = JSON.parse(saved); updateCartUI(); } catch(e) { cart = []; } }
+        function getTotal() { return cart.reduce((acc, item) => acc + item.subtotal, 0); }
         function renderCartModal() {
             const container = document.getElementById('cartItemsList');
             const totalSpan = document.getElementById('cartTotalModal');
             if (!container) return;
-            if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align:center;">Seu pedido está vazio.</p>';
-                totalSpan.innerHTML = 'Total: R$ 0,00';
-                return;
-            }
+            if (cart.length === 0) { container.innerHTML = '<p style="text-align:center;">Seu pedido está vazio.</p>'; totalSpan.innerHTML = 'Total: R$ 0,00'; return; }
             let html = '';
             cart.forEach((item, idx) => {
-                html += `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.nome}</div>
-                            <div class="cart-item-price">${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = R$ ${item.subtotal.toFixed(2)}</div>
-                        </div>
-                        <div class="cart-item-actions">
-                            <button class="cart-item-edit" data-editindex="${idx}">✏️</button>
-                            <button class="cart-item-remove" data-index="${idx}">🗑️</button>
-                        </div>
-                    </div>
-                `;
+                html += `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.nome}</div><div class="cart-item-price">${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = R$ ${item.subtotal.toFixed(2)}</div></div><div class="cart-item-actions"><button class="cart-item-edit" data-editindex="${idx}">✏️</button><button class="cart-item-remove" data-index="${idx}">🗑️</button></div></div>`;
             });
             container.innerHTML = html;
             totalSpan.innerHTML = `Total: R$ ${getTotal().toFixed(2)}`;
-            document.querySelectorAll('.cart-item-remove').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = parseInt(btn.dataset.index);
-                    removeFromCart(idx);
-                });
-            });
-            document.querySelectorAll('.cart-item-edit').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = parseInt(btn.dataset.editindex);
-                    editCartItem(idx);
-                });
-            });
+            document.querySelectorAll('.cart-item-remove').forEach(btn => btn.addEventListener('click', (e) => { const idx = parseInt(btn.dataset.index); removeFromCart(idx); }));
+            document.querySelectorAll('.cart-item-edit').forEach(btn => btn.addEventListener('click', (e) => { const idx = parseInt(btn.dataset.editindex); editCartItem(idx); }));
         }
 
+        // Renderização das seções (mantida)
         function renderSection(sectionKey, containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             const itens = menuData[sectionKey];
             if (!itens) return;
-
             const visiveis = itens.filter(i => !i.hidden);
             const ocultos = itens.filter(i => i.hidden);
-
             function gerarCard(item) {
                 const badgeHtml = item.badge ? `<span class="item-badge">${item.badge}</span>` : '';
                 const kitHtml = (item.kit && item.composicao) ? `<div class="kit-composition"><strong>📋 Composição:</strong><br>${item.composicao}</div>` : '';
                 const unidadeLabel = (item.unidade === "/kg") ? "kg" : (item.unidade === "pacote" ? "pacotes" : (item.unidade === "kit" ? "kits" : "unidades"));
                 const step = (item.unidade === "/kg") ? 0.1 : 1;
                 const min = (item.unidade === "/kg") ? 0.1 : 1;
-                return `
-                    <div class="menu-item-card">
-                        <div class="item-header">
-                            <span class="item-name">${item.nome}</span>
-                            <span class="item-price">R$ ${item.preco.toFixed(2)} / ${item.unidade === "/kg" ? "kg" : item.unidade}</span>
-                        </div>
-                        <div class="item-desc">${item.desc}</div>
-                        ${badgeHtml}
-                        ${kitHtml}
-                        <div class="quantidade-area">
-                            <label>Quantidade (${unidadeLabel}):</label>
-                            <input type="number" class="quantidade-input" value="1" step="${step}" min="${min}" data-preco="${item.preco}" data-unidade="${item.unidade}">
-                            <span class="subtotal">Subtotal: R$ ${item.preco.toFixed(2)}</span>
-                        </div>
-                        <button class="btn-add-item" data-nome="${item.nome}" data-preco="${item.preco}" data-unidade="${item.unidade}">➕ Adicionar ao pedido</button>
-                    </div>
-                `;
+                return `<div class="menu-item-card"><div class="item-header"><span class="item-name">${item.nome}</span><span class="item-price">R$ ${item.preco.toFixed(2)} / ${item.unidade === "/kg" ? "kg" : item.unidade}</span></div><div class="item-desc">${item.desc}</div>${badgeHtml}${kitHtml}<div class="quantidade-area"><label>Quantidade (${unidadeLabel}):</label><input type="number" class="quantidade-input" value="1" step="${step}" min="${min}" data-preco="${item.preco}" data-unidade="${item.unidade}"><span class="subtotal">Subtotal: R$ ${item.preco.toFixed(2)}</span></div><button class="btn-add-item" data-nome="${item.nome}" data-preco="${item.preco}" data-unidade="${item.unidade}">➕ Adicionar ao pedido</button></div>`;
             }
-
             let html = '';
             visiveis.forEach(item => { html += gerarCard(item); });
             if (ocultos.length > 0) {
@@ -1192,7 +1099,6 @@
                 html += `<button class="show-more-btn" onclick="toggleHidden('hidden-${sectionKey}', this)">➕ Mostrar mais opções (${ocultos.length} itens)</button>`;
             }
             container.innerHTML = html;
-
             container.querySelectorAll('.quantidade-input').forEach(input => {
                 input.addEventListener('input', function(e) {
                     const preco = parseFloat(this.dataset.preco);
@@ -1203,7 +1109,6 @@
                     if (subtotalSpan) subtotalSpan.innerText = `Subtotal: R$ ${subtotal.toFixed(2)}`;
                 });
             });
-
             container.querySelectorAll('.btn-add-item').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const nome = btn.dataset.nome;
@@ -1219,19 +1124,6 @@
             });
         }
 
-        function toggleHidden(hiddenId, button) {
-            const hiddenDiv = document.getElementById(hiddenId);
-            if (hiddenDiv.classList.contains('show')) {
-                hiddenDiv.classList.remove('show');
-                const count = hiddenDiv.children.length;
-                button.innerHTML = `➕ Mostrar mais opções (${count} itens)`;
-            } else {
-                hiddenDiv.classList.add('show');
-                const count = hiddenDiv.children.length;
-                button.innerHTML = `➖ Mostrar menos opções (${count} itens)`;
-            }
-        }
-
         renderSection('aves', 'aves-container');
         renderSection('bovinos', 'bovinos-container');
         renderSection('suinos', 'suinos-container');
@@ -1241,45 +1133,189 @@
         renderSection('linguiças', 'linguiças-container');
         renderSection('kits', 'kits-container');
 
-        // ================= AJUSTE DINÂMICO DO OFFSET =================
-        function getHeaderHeight() {
-            const header = document.querySelector('.header');
-            return header ? header.offsetHeight : 100;
+        // ================= FUNÇÃO ALTERADA: toggleHidden com rolagem suave =================
+        window.toggleHidden = function(hiddenId, button) {
+            const hiddenDiv = document.getElementById(hiddenId);
+            if (!hiddenDiv) return;
+            
+            // Verifica se está sendo recolhido (quando a classe 'show' está presente e será removida)
+            const isCollapsing = hiddenDiv.classList.contains('show');
+            
+            if (isCollapsing) {
+                // Recolher: remove a classe 'show' e rola até a imagem da seção
+                hiddenDiv.classList.remove('show');
+                const count = hiddenDiv.children.length;
+                button.innerHTML = `➕ Mostrar mais opções (${count} itens)`;
+                
+                // Extrai o identificador da seção a partir do hiddenId (ex: "hidden-aves" -> "aves")
+                const sectionKey = hiddenId.split('-')[1];
+                if (sectionKey) {
+                    const imgId = `img-${sectionKey}`;
+                    const imgElement = document.getElementById(imgId);
+                    if (imgElement) {
+                        // Usa a função scrollToElement já existente para respeitar o offset do cabeçalho
+                        scrollToElement(imgId);
+                    }
+                }
+            } else {
+                // Expandir: adiciona a classe 'show' e altera o texto do botão
+                hiddenDiv.classList.add('show');
+                const count = hiddenDiv.children.length;
+                button.innerHTML = `➖ Mostrar menos opções (${count} itens)`;
+            }
+        };
+
+        // ================= VERIFICAÇÃO DE HORÁRIO DE ENTREGA =================
+        function isDeliveryOpen() {
+            const now = new Date();
+            const day = now.getDay();  // 0 = domingo
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const current = hour + minute / 60;
+            if (day === 0) return false; // domingo
+            if (day >= 1 && day <= 6 && current >= 8 && current < 18) return true;
+            return false;
         }
 
-        function getBannerHeight() {
-            const banner = document.getElementById('slidingBanner');
-            return banner ? banner.offsetHeight : 0;
+        // Função que retorna a data mínima para agendamento (próximo dia útil, a partir de amanhã)
+        function getMinAgendamentoDate() {
+            const hoje = new Date();
+            const amanha = new Date(hoje);
+            amanha.setDate(hoje.getDate() + 1);
+            // Se amanhã for domingo, pula para segunda
+            while (amanha.getDay() === 0) {
+                amanha.setDate(amanha.getDate() + 1);
+            }
+            return amanha.toISOString().split('T')[0];
         }
 
-        function aplicarScrollMargin() {
-            const headerHeight = getHeaderHeight();
-            const bannerHeight = getBannerHeight();
-            const totalOffset = headerHeight + bannerHeight + 10;
-            document.querySelectorAll('.section-image').forEach(img => {
-                img.style.scrollMarginTop = `${totalOffset}px`;
+        // Função que envia o pedido de fato (com ou sem agendamento)
+        function enviarPedidoFinal(agendamentoInfo = null) {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio. Adicione itens antes de finalizar.');
+                return false;
+            }
+            const nome = document.getElementById('customerName').value.trim();
+            if (nome === '') { alert('Por favor, informe seu nome.'); return false; }
+            let payment = null;
+            document.querySelectorAll('input[name="payment"]').forEach(r => { if (r.checked) payment = r.value; });
+            if (!payment) { alert('Selecione a forma de pagamento.'); return false; }
+            let troco = '';
+            if (payment === 'Dinheiro') {
+                const trocoValor = document.getElementById('changeAmount').value.trim();
+                if (trocoValor === '') { alert('Informe o valor para troco (ex: R$ 100,00)'); return false; }
+                troco = `\n💰 *Troco para:* ${trocoValor}`;
+            }
+            let delivery = null;
+            document.querySelectorAll('input[name="delivery"]').forEach(r => { if (r.checked) delivery = r.value; });
+            if (!delivery) { alert('Selecione a forma de entrega.'); return false; }
+            let endereco = '';
+            if (delivery === 'Delivery') {
+                const addr = document.getElementById('deliveryAddress').value.trim();
+                if (addr === '') { alert('Informe o endereço completo para entrega.'); return false; }
+                endereco = `\n📍 *Endereço:* ${addr}`;
+            }
+
+            let itensTexto = '';
+            cart.forEach((item, idx) => {
+                itensTexto += `${idx+1}. *${item.nome}* – ${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = *R$ ${item.subtotal.toFixed(2)}*\n`;
             });
+            const total = getTotal().toFixed(2);
+            
+            let mensagem = `🍖 *NOVO PEDIDO - CASA DE CARNES DENILSON* 🍖\n\n` +
+                `👤 *Cliente:* ${nome}\n\n` +
+                `📋 *ITENS DO PEDIDO:*\n${itensTexto}\n` +
+                `💰 *Total do pedido:* R$ ${total}\n\n` +
+                `💳 *Pagamento:* ${payment}${troco}\n` +
+                `🚚 *Entrega:* ${delivery}${endereco}\n`;
+
+            if (agendamentoInfo) {
+                mensagem += `\n📅 *Pedido agendado para:* ${agendamentoInfo.data} – ${agendamentoInfo.turno}\n`;
+                mensagem += `🔔 *ATENÇÃO:* Pedido realizado fora do horário de entrega. Confirmar agendamento com o cliente.\n`;
+            } else {
+                mensagem += `\n⏱️ *Pedido gerado via cardápio digital* – Aguardamos confirmação.\n`;
+            }
+
+            const numero = '5534996623829';
+            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+            if (confirm('Pedido enviado! Deseja limpar o carrinho?')) {
+                cart = [];
+                updateCartUI();
+                saveCart();
+            }
+            return true;
         }
 
-        function ajustarBannerTop() {
-            const header = document.querySelector('.header');
-            const banner = document.getElementById('slidingBanner');
-            if (header && banner) {
-                const headerHeight = header.offsetHeight;
-                banner.style.top = `${headerHeight}px`;
+        // Função principal que será chamada ao clicar em "Enviar pedido"
+        function handleSendOrder() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio. Adicione itens antes de finalizar.');
+                return;
+            }
+            // Verifica se a entrega está aberta (caso seja delivery, se for retirada, não bloqueia)
+            let deliveryOption = null;
+            document.querySelectorAll('input[name="delivery"]').forEach(r => { if (r.checked) deliveryOption = r.value; });
+            if (deliveryOption === 'Delivery' && !isDeliveryOpen()) {
+                // Exibe modal de agendamento
+                const agendamentoModal = document.getElementById('agendamentoModal');
+                const dataInput = document.getElementById('agendamentoData');
+                dataInput.min = getMinAgendamentoDate();
+                // Pré-seleciona o próximo dia útil
+                dataInput.value = getMinAgendamentoDate();
+                agendamentoModal.classList.add('active');
+                return; // Aguarda o cliente decidir
+            } else {
+                // Pode enviar normalmente
+                enviarPedidoFinal(null);
+                document.getElementById('cartModal').classList.remove('active');
             }
         }
 
+        // Eventos do modal de agendamento
+        document.getElementById('confirmarAgendamentoBtn').addEventListener('click', () => {
+            const data = document.getElementById('agendamentoData').value;
+            const turno = document.getElementById('agendamentoTurno').value;
+            if (!data) {
+                alert('Selecione uma data para o agendamento.');
+                return;
+            }
+            const hoje = new Date();
+            hoje.setHours(0,0,0,0);
+            const dataSelecionada = new Date(data);
+            if (dataSelecionada < hoje) {
+                alert('A data de agendamento não pode ser anterior a hoje.');
+                return;
+            }
+            document.getElementById('agendamentoModal').classList.remove('active');
+            enviarPedidoFinal({ data, turno });
+            document.getElementById('cartModal').classList.remove('active');
+        });
+
+        document.getElementById('cancelarAgendamentoBtn').addEventListener('click', () => {
+            document.getElementById('agendamentoModal').classList.remove('active');
+            alert('Pedido não enviado. Você pode finalizar o pedido dentro do horário de entregas ou optar pela retirada no balcão.');
+        });
+
+        // ================= SCRIPTS DE UI (scroll, status, etc.) =================
+        function getHeaderHeight() { const header = document.querySelector('.header'); return header ? header.offsetHeight : 100; }
+        function getBannerHeight() { const banner = document.getElementById('slidingBanner'); return banner ? banner.offsetHeight : 0; }
+        function aplicarScrollMargin() {
+            const totalOffset = getHeaderHeight() + getBannerHeight() + 10;
+            document.querySelectorAll('.section-image').forEach(img => { img.style.scrollMarginTop = `${totalOffset}px`; });
+        }
+        function ajustarBannerTop() {
+            const header = document.querySelector('.header');
+            const banner = document.getElementById('slidingBanner');
+            if (header && banner) { banner.style.top = `${header.offsetHeight}px`; }
+        }
         function scrollToElement(elementId) {
             const element = document.getElementById(elementId);
             if (!element) return;
-            const headerHeight = getHeaderHeight();
-            const bannerHeight = getBannerHeight();
-            const offset = headerHeight + bannerHeight + 5;
+            const offset = getHeaderHeight() + getBannerHeight() + 5;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
         }
-
         function configurarLinksMenu() {
             document.querySelectorAll('.footer-link').forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -1289,13 +1325,10 @@
                 });
             });
         }
-
         let observer = null;
         function configurarObserver() {
             if (observer) observer.disconnect();
-            const headerHeight = getHeaderHeight();
-            const bannerHeight = getBannerHeight();
-            const totalOffset = headerHeight + bannerHeight + 10;
+            const totalOffset = getHeaderHeight() + getBannerHeight() + 10;
             const rootMargin = `-${totalOffset}px 0px -70% 0px`;
             observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1305,54 +1338,34 @@
                     }
                 });
             }, { root: null, rootMargin, threshold: 0 });
-            const allIds = [...imageIds];
-            allIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) observer.observe(el);
-            });
+            const imageIds = ['img-aves', 'img-bovinos', 'img-suinos', 'img-embutidos', 'img-especiais', 'img-espetinhos', 'img-linguiças', 'img-kits'];
+            imageIds.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
         }
-
-        function atualizarOffsets() {
-            ajustarBannerTop();
-            aplicarScrollMargin();
-            configurarObserver();
-        }
-
-        const imageIds = ['img-aves', 'img-bovinos', 'img-suinos', 'img-embutidos', 'img-especiais', 'img-espetinhos', 'img-linguiças', 'img-kits'];
-        const sectionMap = {
-            'img-aves': 'aves', 'img-bovinos': 'bovinos', 'img-suinos': 'suinos', 'img-embutidos': 'embutidos',
-            'img-especiais': 'especiais', 'img-espetinhos': 'espetinhos', 'img-linguiças': 'linguiças', 'img-kits': 'kits'
-        };
+        const sectionMap = { 'img-aves': 'aves', 'img-bovinos': 'bovinos', 'img-suinos': 'suinos', 'img-embutidos': 'embutidos', 'img-especiais': 'especiais', 'img-espetinhos': 'espetinhos', 'img-linguiças': 'linguiças', 'img-kits': 'kits' };
         function setActiveLink(sectionId) {
             document.querySelectorAll('.footer-link').forEach(link => {
                 if (link.getAttribute('data-section') === sectionId) link.classList.add('active');
                 else link.classList.remove('active');
             });
         }
-
         window.addEventListener('load', () => {
             configurarLinksMenu();
-            atualizarOffsets();
+            ajustarBannerTop();
+            aplicarScrollMargin();
+            configurarObserver();
             setTimeout(() => {
                 let firstVisible = null;
-                const headerHeight = getHeaderHeight();
-                const bannerHeight = getBannerHeight();
-                const offset = headerHeight + bannerHeight + 50;
-                for (let id of imageIds) {
+                const offset = getHeaderHeight() + getBannerHeight() + 50;
+                const ids = ['img-aves', 'img-bovinos', 'img-suinos', 'img-embutidos', 'img-especiais', 'img-espetinhos', 'img-linguiças', 'img-kits'];
+                for (let id of ids) {
                     const el = document.getElementById(id);
-                    if (el && el.getBoundingClientRect().top <= offset) {
-                        firstVisible = sectionMap[id];
-                        break;
-                    }
+                    if (el && el.getBoundingClientRect().top <= offset) { firstVisible = sectionMap[id]; break; }
                 }
                 setActiveLink(firstVisible || 'aves');
             }, 200);
         });
-        window.addEventListener('resize', () => {
-            atualizarOffsets();
-        });
+        window.addEventListener('resize', () => { ajustarBannerTop(); aplicarScrollMargin(); configurarObserver(); });
 
-        // Status de entrega
         function atualizarStatusEntrega() {
             const now = new Date();
             const day = now.getDay();
@@ -1374,7 +1387,7 @@
         atualizarStatusEntrega();
         setInterval(atualizarStatusEntrega, 60000);
 
-        // ================= LÓGICA DO MODAL =================
+        // ================= MODAL DO CARRINHO E EVENTOS =================
         const cartModal = document.getElementById('cartModal');
         const cartFloatBtn = document.getElementById('cartFloatBtn');
         const closeCartBtn = document.getElementById('closeCartModalBtn');
@@ -1388,89 +1401,13 @@
         function toggleConditionalFields() {
             let selectedPayment = null;
             paymentRadios.forEach(r => { if (r.checked) selectedPayment = r.value; });
-            if (selectedPayment === 'Dinheiro') {
-                changeField.style.display = 'block';
-            } else {
-                changeField.style.display = 'none';
-                document.getElementById('changeAmount').value = '';
-            }
+            changeField.style.display = (selectedPayment === 'Dinheiro') ? 'block' : 'none';
             let selectedDelivery = null;
             deliveryRadios.forEach(r => { if (r.checked) selectedDelivery = r.value; });
-            if (selectedDelivery === 'Delivery') {
-                addressField.style.display = 'block';
-            } else {
-                addressField.style.display = 'none';
-                document.getElementById('deliveryAddress').value = '';
-            }
+            addressField.style.display = (selectedDelivery === 'Delivery') ? 'block' : 'none';
         }
-
         paymentRadios.forEach(r => r.addEventListener('change', toggleConditionalFields));
         deliveryRadios.forEach(r => r.addEventListener('change', toggleConditionalFields));
-
-        function sendOrderToWhatsApp() {
-            if (cart.length === 0) {
-                alert('Seu carrinho está vazio. Adicione itens antes de finalizar.');
-                return;
-            }
-            const nome = document.getElementById('customerName').value.trim();
-            if (nome === '') {
-                alert('Por favor, informe seu nome.');
-                return;
-            }
-            let payment = null;
-            paymentRadios.forEach(r => { if (r.checked) payment = r.value; });
-            if (!payment) {
-                alert('Selecione a forma de pagamento.');
-                return;
-            }
-            let troco = '';
-            if (payment === 'Dinheiro') {
-                const trocoValor = document.getElementById('changeAmount').value.trim();
-                if (trocoValor === '') {
-                    alert('Informe o valor para troco (ex: R$ 100,00)');
-                    return;
-                }
-                troco = `\n💰 *Troco para:* ${trocoValor}`;
-            }
-            let delivery = null;
-            deliveryRadios.forEach(r => { if (r.checked) delivery = r.value; });
-            if (!delivery) {
-                alert('Selecione a forma de entrega.');
-                return;
-            }
-            let endereco = '';
-            if (delivery === 'Delivery') {
-                const addr = document.getElementById('deliveryAddress').value.trim();
-                if (addr === '') {
-                    alert('Informe o endereço completo para entrega.');
-                    return;
-                }
-                endereco = `\n📍 *Endereço:* ${addr}`;
-            }
-
-            let itensTexto = '';
-            cart.forEach((item, idx) => {
-                itensTexto += `${idx+1}. *${item.nome}* – ${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = *R$ ${item.subtotal.toFixed(2)}*\n`;
-            });
-            const total = getTotal().toFixed(2);
-            const mensagem = `🍖 *NOVO PEDIDO - CASA DE CARNES DENILSON* 🍖\n\n` +
-                `👤 *Cliente:* ${nome}\n\n` +
-                `📋 *ITENS DO PEDIDO:*\n${itensTexto}\n` +
-                `💰 *Total do pedido:* R$ ${total}\n\n` +
-                `💳 *Pagamento:* ${payment}${troco}\n` +
-                `🚚 *Entrega:* ${delivery}${endereco}\n\n` +
-                `⏱️ *Pedido gerado via cardápio digital* – Aguardamos confirmação.`;
-
-            const numero = '5534996623829';
-            const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-            window.open(url, '_blank');
-            if (confirm('Pedido enviado! Deseja limpar o carrinho?')) {
-                cart = [];
-                updateCartUI();
-                saveCart();
-            }
-            cartModal.classList.remove('active');
-        }
 
         cartFloatBtn.addEventListener('click', () => {
             renderCartModal();
@@ -1478,7 +1415,7 @@
             toggleConditionalFields();
         });
         closeCartBtn.addEventListener('click', () => cartModal.classList.remove('active'));
-        sendOrderBtn.addEventListener('click', sendOrderToWhatsApp);
+        sendOrderBtn.addEventListener('click', handleSendOrder);
         cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.classList.remove('active'); });
         loadCart();
     </script>
