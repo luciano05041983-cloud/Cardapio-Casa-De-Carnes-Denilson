@@ -595,6 +595,12 @@
             font-size: 10pt;
         }
 
+        /* Estilo para campos inválidos */
+        .order-form input.error, .order-form .radio-group.error {
+            border: 1px solid #c0392b;
+            background-color: #ffe6e6;
+        }
+
         .radio-group {
             display: flex;
             gap: 15px;
@@ -682,11 +688,41 @@
             background-color: #7a1515;
             transform: scale(1.02);
         }
+        
+        /* TOAST NOTIFICATION - posicionado ao lado do botão Meu Pedido */
+        .toast-notification {
+            position: fixed;
+            bottom: 150px;  /* acima do botão do carrinho (que está em bottom:90px) */
+            left: 20px;     /* alinhado à esquerda junto com o botão */
+            background-color: #1c1c1c;
+            color: #ffd966;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 11pt;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10050;
+            border-left: 6px solid #9e1b1b;
+            white-space: nowrap;
+            max-width: 90vw;
+            white-space: normal;
+            text-align: center;
+            pointer-events: none;
+            animation: fadeInOut 2s ease forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+        }
+        
         @media (max-width: 550px) {
             .footer-link { font-size: 6.5pt; min-width: 55px; }
             .footer-icon { font-size: 12pt; }
             .whatsapp-float { width: 50px; height: 50px; font-size: 26px; bottom: 80px; }
             .cart-float { bottom: 80px; padding: 8px 16px; font-size: 10pt; }
+            .toast-notification { bottom: 130px; font-size: 10pt; left: 20px; right: auto; }
         }
     </style>
 </head>
@@ -746,7 +782,7 @@
     <div class="section-title"><span class="section-icon">📦</span><div class="section-text">Kits Semanais<div class="section-sub">Economia e praticidade</div></div></div>
     <div id="kits-container"></div>
 
-    <!-- NOVA SEÇÃO PERSONALIZAÇÃO -->
+    <!-- SEÇÃO PERSONALIZAÇÃO -->
     <div class="section-image" id="img-carne-moida"><div style="background:#e8d6cc; border-radius: 24px; padding: 12px; display: inline-block;">🥩🍖</div></div>
     <div class="custom-meat-card">
         <span style="font-size: 40px;">🥩</span>
@@ -860,7 +896,7 @@
 </div>
 
 <script>
-    // ================= DADOS COMPLETOS DO CARDÁPIO (RESTAURADOS) =================
+    // ================= DADOS COMPLETOS DO CARDÁPIO =================
     const menuData = {
         aves: [
             { nome: "Asa", desc: "Asas de frango frescas, perfeitas para fritar ou assar.", preco: 19.90, unidade: "/kg" },
@@ -973,7 +1009,7 @@
         ]
     };
 
-    // ================= CARRINHO COMPLETO =================
+    // ================= CARRINHO =================
     let cart = [];
     function addToCart(item) { cart.push(item); updateCartUI(); saveCart(); renderCartModal(); }
     function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); saveCart(); renderCartModal(); }
@@ -1007,7 +1043,18 @@
         document.querySelectorAll('.cart-item-edit').forEach(btn => btn.addEventListener('click', (e) => { const idx = parseInt(btn.dataset.editindex); editCartItem(idx); }));
     }
 
-    // ================= RENDERIZAÇÃO DAS SEÇÕES (COM HIDDEN E MOSTRAR MAIS) =================
+    // ================= TOAST (POP-UP) AO LADO DO BOTÃO =================
+    function showToast(message) {
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2000);
+    }
+
+    // ================= RENDERIZAÇÃO DAS SEÇÕES =================
     function renderSection(sectionKey, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1054,11 +1101,11 @@
                 if (isNaN(quantidade) || quantidade <= 0) quantidade = 1;
                 const subtotal = precoUnit * quantidade;
                 addToCart({ nome, precoUnit, quantidade, unidade, subtotal });
+                showToast(`✅ Você adicionou ${nome} ao pedido!`);
             });
         });
     }
 
-    // Função toggleHidden com rolagem suave até a imagem da seção
     window.toggleHidden = function(hiddenId, button) {
         const hiddenDiv = document.getElementById(hiddenId);
         if (!hiddenDiv) return;
@@ -1080,7 +1127,6 @@
         }
     };
 
-    // Renderizar todas as seções
     renderSection('aves', 'aves-container');
     renderSection('bovinos', 'bovinos-container');
     renderSection('suinos', 'suinos-container');
@@ -1090,7 +1136,7 @@
     renderSection('linguiças', 'linguiças-container');
     renderSection('kits', 'kits-container');
 
-    // ================= LÓGICA DE HORÁRIO DE ENTREGA E STATUS =================
+    // ================= LÓGICA DE HORÁRIO E ENTREGA =================
     function isDeliveryOpen() {
         const now = new Date();
         const day = now.getDay();
@@ -1108,28 +1154,61 @@
         while (amanha.getDay() === 0) amanha.setDate(amanha.getDate() + 1);
         return amanha.toISOString().split('T')[0];
     }
+    
+    // Função que valida e envia, SEM fechar o modal em caso de erro
     function enviarPedidoFinal(agendamentoInfo = null) {
         if (cart.length === 0) { alert('Seu carrinho está vazio.'); return false; }
-        const nome = document.getElementById('customerName').value.trim();
-        if (nome === '') { alert('Por favor, informe seu nome.'); return false; }
+        
+        const nomeInput = document.getElementById('customerName');
+        const nome = nomeInput.value.trim();
+        if (nome === '') { 
+            alert('Por favor, informe seu nome.');
+            nomeInput.classList.add('error');
+            return false; 
+        } else { nomeInput.classList.remove('error'); }
+        
         let payment = null;
         document.querySelectorAll('input[name="payment"]').forEach(r => { if (r.checked) payment = r.value; });
-        if (!payment) { alert('Selecione a forma de pagamento.'); return false; }
+        if (!payment) { 
+            alert('Selecione a forma de pagamento.');
+            document.getElementById('paymentGroup').classList.add('error');
+            return false; 
+        } else { document.getElementById('paymentGroup').classList.remove('error'); }
+        
         let troco = '';
         if (payment === 'Dinheiro') {
             const trocoValor = document.getElementById('changeAmount').value.trim();
-            if (trocoValor === '') { alert('Informe o valor para troco'); return false; }
-            troco = `\n💰 *Troco para:* ${trocoValor}`;
+            if (trocoValor === '') { 
+                alert('Informe o valor para troco');
+                document.getElementById('changeAmount').classList.add('error');
+                return false; 
+            } else { 
+                document.getElementById('changeAmount').classList.remove('error');
+                troco = `\n💰 *Troco para:* ${trocoValor}`;
+            }
         }
+        
         let delivery = null;
         document.querySelectorAll('input[name="delivery"]').forEach(r => { if (r.checked) delivery = r.value; });
-        if (!delivery) { alert('Selecione a forma de entrega.'); return false; }
+        if (!delivery) { 
+            alert('Selecione a forma de entrega.');
+            document.getElementById('deliveryGroup').classList.add('error');
+            return false; 
+        } else { document.getElementById('deliveryGroup').classList.remove('error'); }
+        
         let endereco = '';
         if (delivery === 'Delivery') {
             const addr = document.getElementById('deliveryAddress').value.trim();
-            if (addr === '') { alert('Informe o endereço completo.'); return false; }
-            endereco = `\n📍 *Endereço:* ${addr}`;
+            if (addr === '') { 
+                alert('Informe o endereço completo.');
+                document.getElementById('deliveryAddress').classList.add('error');
+                return false; 
+            } else { 
+                document.getElementById('deliveryAddress').classList.remove('error');
+                endereco = `\n📍 *Endereço:* ${addr}`;
+            }
         }
+        
         let itensTexto = '';
         cart.forEach((item, idx) => {
             itensTexto += `${idx+1}. *${item.nome}* – ${item.quantidade} ${item.unidade} x R$ ${item.precoUnit.toFixed(2)} = *R$ ${item.subtotal.toFixed(2)}*\n`;
@@ -1142,6 +1221,7 @@
         if (confirm('Pedido enviado! Deseja limpar o carrinho?')) { cart = []; updateCartUI(); saveCart(); }
         return true;
     }
+    
     function handleSendOrder() {
         if (cart.length === 0) { alert('Carrinho vazio'); return; }
         let deliveryOption = null;
@@ -1153,25 +1233,30 @@
             agModal.classList.add('active');
             return;
         } else {
-            enviarPedidoFinal(null);
-            document.getElementById('cartModal').classList.remove('active');
+            const success = enviarPedidoFinal(null);
+            if (success) {
+                document.getElementById('cartModal').classList.remove('active');
+            }
         }
     }
+    
     // Eventos agendamento
     document.getElementById('confirmarAgendamentoBtn')?.addEventListener('click', () => {
         const data = document.getElementById('agendamentoData').value;
         const turno = document.getElementById('agendamentoTurno').value;
         if (!data) { alert('Selecione uma data'); return; }
         document.getElementById('agendamentoModal').classList.remove('active');
-        enviarPedidoFinal({ data, turno });
-        document.getElementById('cartModal').classList.remove('active');
+        const success = enviarPedidoFinal({ data, turno });
+        if (success) {
+            document.getElementById('cartModal').classList.remove('active');
+        }
     });
     document.getElementById('cancelarAgendamentoBtn')?.addEventListener('click', () => {
         document.getElementById('agendamentoModal').classList.remove('active');
         alert('Pedido não enviado. Você pode finalizar o pedido dentro do horário ou optar pela retirada.');
     });
 
-    // ================= FUNÇÕES DE SCROLL E MENU =================
+    // ================= SCROLL E MENU =================
     function getHeaderHeight() { const header = document.querySelector('.header'); return header ? header.offsetHeight : 100; }
     function getBannerHeight() { const banner = document.getElementById('slidingBanner'); return banner ? banner.offsetHeight : 0; }
     function aplicarScrollMargin() {
@@ -1272,6 +1357,7 @@
         const nomeProduto = `Carne Moída: ${nomeCarne} (${moagem})`;
         const subtotal = precoKg * kg;
         addToCart({ nome: nomeProduto, precoUnit: precoKg, quantidade: kg, unidade: "kg", subtotal: subtotal });
+        showToast(`✅ Você adicionou ${nomeProduto} ao pedido!`);
         document.getElementById('personalizarModal').classList.remove('active');
     });
     document.getElementById('btnCancelarPersonalizar')?.addEventListener('click', () => document.getElementById('personalizarModal').classList.remove('active'));
